@@ -1,6 +1,6 @@
 <?php
 include_once 'konten.php';
-include_once 'berita.php'; // Memuat file berita.php
+include_once 'berita.php';
 
 class BerandaController
 {
@@ -15,25 +15,31 @@ class BerandaController
         $content = $this->model->findPublishedContent();
         $this->view->index($content);
     }
+
+    public function show($id)
+    {
+        $content = $this->model->find($id);
+        $this->view->show($content);
+    }
+    
 }
 
 class BerandaModel
 {
-
 }
 
 class BerandaView
 {
     public function index($content)
     {
-        ?>
+?>
         <div class="pmd-card pmd-z-depth">
             <div class="pmd-card-title">
                 <h2 class="pmd-card-title-text typo-fill-secondary">Dashboard</h2>
             </div>
             <div class="pmd-card-body">
                 <div class="row">
-                    <?php foreach ($content as $item): ?>
+                    <?php foreach ($content as $item) : ?>
                         <div class="col-md-4">
                             <div class="card">
                                 <a href="berita?id=<?php echo $item->id; ?>">
@@ -52,7 +58,28 @@ class BerandaView
                 </div>
             </div>
         </div>
-        <?php
+<?php
+    }
+
+    public function show($content)
+    {
+        if ($content->id != 0) {
+?>
+            <div class="pmd-card pmd-z-depth">
+                <div class="pmd-card-title">
+                    <h2 class="pmd-card-title-text typo-fill-secondary"><?php echo $content->judul; ?></h2>
+                </div>
+                <div class="pmd-card-body">
+                    <p>Kategori: <?php echo $content->kategori; ?></p>
+                    <p>Tanggal: <?php echo $content->tanggal; ?></p>
+                    <img src="<?php echo $content->foto; ?>" alt="Foto Konten" width="200" height="200">
+                    <p><?php echo $content->isi; ?></p>
+                </div>
+            </div>
+<?php
+        } else {
+            echo "Konten tidak ditemukan.";
+        }
     }
 }
 ?>

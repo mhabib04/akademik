@@ -157,7 +157,7 @@ class PenggunaView
     public function edit($result)
     {
         global $app;
-        ?>
+?>
         <form action="<?php echo $app->config["site"]; ?>/admin/Pengguna/save" method="post">
             <input type="hidden" name="id" value="<?php echo $result->id; ?>">
             <div class="pmd-card pmd-z-depth">
@@ -166,9 +166,9 @@ class PenggunaView
                 </div>
                 <?php
                 if (isset($_REQUEST["message"])) {
-                    ?>
+                ?>
                     <div class="alert alert-info"><?php echo $_REQUEST["message"]; ?></div>
-                    <?php
+                <?php
                 }
                 ?>
                 <div class="pmd-card-body">
@@ -178,8 +178,7 @@ class PenggunaView
                                 <label for="username" class="control-label text-danger">
                                     Username
                                 </label>
-                                <input class="form-control" name="username" maxlength="40"
-                                    value="<?php echo $result->username; ?>" required>
+                                <input class="form-control" name="username" maxlength="40" value="<?php echo $result->username; ?>" required>
                                 <span class="pmd-textfield-focused"></span>
                             </div>
                         </div>
@@ -201,8 +200,7 @@ class PenggunaView
                                 <label for="nama" class="control-label text-danger">
                                     Nama
                                 </label>
-                                <input class="form-control" name="nama" maxlength="100" value="<?php echo $result->nama; ?>"
-                                    required>
+                                <input class="form-control" name="nama" maxlength="100" value="<?php echo $result->nama; ?>" required>
                                 <span class="pmd-textfield-focused"></span>
                             </div>
                         </div>
@@ -230,21 +228,21 @@ class PenggunaView
                 </div>
             </div>
         </form>
-        <?php
+    <?php
     }
     public function index($result)
     {
         global $app;
-        ?>
+    ?>
         <div class="pmd-card pmd-z-depth">
             <div class="pmd-card-title">
                 <h2 class="pmd-card-title-text typo-fill-secondary">Pengguna</h2>
             </div>
             <?php
             if (isset($_REQUEST["message"])) {
-                ?>
+            ?>
                 <div class="alert alert-info"><?php echo $_REQUEST["message"]; ?></div>
-                <?php
+            <?php
             }
             ?>
             <div class="pmd-card-body">
@@ -252,8 +250,7 @@ class PenggunaView
                     <a class="btn btn-md btn-primary" href="<?php echo $app->config["site"]; ?>/admin/Pengguna/add">Tambah</a>
                 </div>
                 <div class="table-responsive">
-                    <table id="example" class="table pmd-table table-hover table-striped display responsive" cellspacing="0"
-                        width="100%">
+                    <table id="example" class="table pmd-table table-hover table-striped display responsive" cellspacing="0" width="100%">
                         <thead>
                             <tr>
                                 <th style="width:50px;">Aksi</th>
@@ -265,19 +262,17 @@ class PenggunaView
                         <tbody>
                             <?php
                             foreach ($result as $v) {
-                                ?>
+                            ?>
                                 <tr>
                                     <td>
-                                        <a href="<?php echo $app->config["site"]; ?>/admin/Pengguna/edit/<?php echo $v->id; ?>"><i
-                                                class="material-icons md-dark pmd-sm">edit</i></a>
-                                        <a href="javascript:deleteRecord(<?php echo $v->id; ?>);"><i
-                                                class="material-icons md-dark pmd-sm">delete</i></a>
+                                        <a href="<?php echo $app->config["site"]; ?>/admin/Pengguna/edit/<?php echo $v->id; ?>"><i class="material-icons md-dark pmd-sm">edit</i></a>
+                                        <a href="javascript:deleteRecord(<?php echo $v->id; ?>);"><i class="material-icons md-dark pmd-sm">delete</i></a>
                                     </td>
                                     <td><?php echo $v->username; ?></td>
                                     <td><?php echo $v->nama; ?></td>
                                     <td><?php echo $v->level_akses; ?></td>
                                 </tr>
-                                <?php
+                            <?php
                             }
                             ?>
                         </tbody>
@@ -296,7 +291,7 @@ class PenggunaView
                     window.open("<?php echo $app->config["site"] ?>/admin/Pengguna/delete/" + id, '_self');
                 }
             }
-            document.addEventListener('DOMContentLoaded', function () {
+            document.addEventListener('DOMContentLoaded', function() {
                 $('#example').DataTable({
                     responsive: {
                         details: {
@@ -308,26 +303,25 @@ class PenggunaView
                     bFilter: true,
                     bLengthChange: true,
                     pagingType: "simple",
-                    "paging": true,
-                    "searching": true,
-                    "language": {
-                        "info": " START - END of TOTAL ",
-                        "sLengthMenu": "<span class='custom-select-title'>Rows per page:</span> <span class='custom-select'> MENU </span>",
-                        "sSearch": "",
-                        "sSearchPlaceholder": "Search",
-                        "paginate": {
-                            "sNext": " ",
-                            "sPrevious": " "
+                    paging: true,
+                    searching: true,
+                    language: {
+                        info: " _START_ - _END_ of _TOTAL_ ",
+                        sLengthMenu: "<span class='custom-select-title'>Rows per page:</span> <span class='custom-select'> _MENU_ </span>",
+                        sSearch: "",
+                        sSearchPlaceholder: "Search",
+                        paginate: {
+                            sNext: " ",
+                            sPrevious: " "
                         },
                     },
-                    dom:
-                        "<'pmd-card-title'<'data-table-title'><'search-paper pmd-textfield'f>>" +
+                    dom: "<'pmd-card-title'<'data-table-title'><'search-paper pmd-textfield'f>>" +
                         "<'row'<'col-sm-12'tr>>" +
                         "<'pmd-card-footer' <'pmd-datatable-pagination' l i p>>",
                 });
             });
         </script>
-        <?php
+<?php
     }
 }
 ?>

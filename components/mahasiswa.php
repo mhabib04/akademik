@@ -90,10 +90,13 @@ class MahasiswaModel
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         //curl_setopt($ch, CURLOPT_URL, $config["site"]."/admin/Api/getMahasiswa/".$nim."?json=1"); 
         curl_setopt($ch, CURLOPT_URL, $config["site"] . "/Api/getMahasiswa/" . $nim . "?json=1");
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-            'Content-Type: application/json',
-            'Authorization: Bearer ' . $config["token"]
-        )
+        curl_setopt(
+            $ch,
+            CURLOPT_HTTPHEADER,
+            array(
+                'Content-Type: application/json',
+                'Authorization: Bearer ' . $config["token"]
+            )
         );
         //curl_setopt($ch, CURLOPT_POST, 1);
         //curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($postParameters));
@@ -114,41 +117,41 @@ class MahasiswaModel
     }
 
     public function save()
-{
-    global $app;
+    {
+        global $app;
 
-    $nim = $_REQUEST["nim"];
-    $nama = $_REQUEST["nama"];
-    $tempat_lahir = $_REQUEST["tempat_lahir"];
-    $tanggal_lahir = $_REQUEST["tanggal_lahir"];
-    $jenis_kelamin = $_REQUEST["jenis_kelamin"];
-    $jurusan_id = $_REQUEST["jurusan_id"];
-    $tahun_masuk = $_REQUEST["tahun_masuk"];
-    $foto = $_REQUEST["foto"];
+        $nim = $_REQUEST["nim"];
+        $nama = $_REQUEST["nama"];
+        $tempat_lahir = $_REQUEST["tempat_lahir"];
+        $tanggal_lahir = $_REQUEST["tanggal_lahir"];
+        $jenis_kelamin = $_REQUEST["jenis_kelamin"];
+        $jurusan_id = $_REQUEST["jurusan_id"];
+        $tahun_masuk = $_REQUEST["tahun_masuk"];
+        $foto = $_REQUEST["foto"];
 
-    if (empty($nama)) {
-        header("Location:" . $app->config["site"] . "/admin/Mahasiswa/edit/" . $nim . "?message=Nama belum diisi");
-        return;
-    }
+        if (empty($nama)) {
+            header("Location:" . $app->config["site"] . "/admin/Mahasiswa/edit/" . $nim . "?message=Nama belum diisi");
+            return;
+        }
 
-    $sql = "INSERT INTO mahasiswa (nim, nama, tempat_lahir, tanggal_lahir, jenis_kelamin, jurusan_id, tahun_masuk, foto)
+        $sql = "INSERT INTO mahasiswa (nim, nama, tempat_lahir, tanggal_lahir, jenis_kelamin, jurusan_id, tahun_masuk, foto)
             VALUES (:nim, :nama, :tempat_lahir, :tanggal_lahir, :jenis_kelamin, :jurusan_id, :tahun_masuk, :foto)
             ON DUPLICATE KEY UPDATE nama=:nama, tempat_lahir=:tempat_lahir, tanggal_lahir=:tanggal_lahir, jenis_kelamin=:jenis_kelamin,
             jurusan_id=:jurusan_id, tahun_masuk=:tahun_masuk, foto=:foto";
-    $params = array(
-        ":nim" => $nim,
-        ":nama" => $nama,
-        ":tempat_lahir" => $tempat_lahir,
-        ":tanggal_lahir" => $tanggal_lahir,
-        ":jenis_kelamin" => $jenis_kelamin,
-        ":jurusan_id" => $jurusan_id,
-        ":tahun_masuk" => $tahun_masuk,
-        ":foto" => $foto
-    );
-    $app->query($sql, $params);
+        $params = array(
+            ":nim" => $nim,
+            ":nama" => $nama,
+            ":tempat_lahir" => $tempat_lahir,
+            ":tanggal_lahir" => $tanggal_lahir,
+            ":jenis_kelamin" => $jenis_kelamin,
+            ":jurusan_id" => $jurusan_id,
+            ":tahun_masuk" => $tahun_masuk,
+            ":foto" => $foto
+        );
+        $app->query($sql, $params);
 
-    header("Location:" . $app->config["site"] . "/admin/Mahasiswa?message=Data berhasil disimpan");
-}
+        header("Location:" . $app->config["site"] . "/admin/Mahasiswa?message=Data berhasil disimpan");
+    }
 
 
     public function delete($nim)
@@ -170,7 +173,7 @@ class MahasiswaView
     public function edit($result)
     {
         global $app;
-        ?>
+?>
         <form action="<?php echo $app->config["site"]; ?>/admin/Mahasiswa/save" method="post">
             <input type="hidden" name="nim" value="<?php echo $result->nim; ?>">
             <div class="pmd-card pmd-z-depth">
@@ -179,9 +182,9 @@ class MahasiswaView
                 </div>
                 <?php
                 if (isset($_REQUEST["message"])) {
-                    ?>
+                ?>
                     <div class="alert alert-info"><?php echo $_REQUEST["message"]; ?></div>
-                    <?php
+                <?php
                 }
                 ?>
                 <div class="pmd-card-body">
@@ -210,8 +213,10 @@ class MahasiswaView
                             <div class="form-group form-group-sm">
                                 <label for="jenis_kelamin" class="control-label text-danger">Jenis Kelamin</label>
                                 <select class="form-control" name="jenis_kelamin" required>
-                                    <option value="Laki-laki" <?php if (isset($result->jenis_kelamin) && $result->jenis_kelamin == 'Laki-laki') echo 'selected'; ?>>Laki-laki</option>
-                                    <option value="Perempuan" <?php if (isset($result->jenis_kelamin) && $result->jenis_kelamin == 'Perempuan') echo 'selected'; ?>>Perempuan</option>
+                                    <option value="Laki-laki" <?php if (isset($result->jenis_kelamin) && $result->jenis_kelamin == 'Laki-laki')
+                                                                    echo 'selected'; ?>>Laki-laki</option>
+                                    <option value="Perempuan" <?php if (isset($result->jenis_kelamin) && $result->jenis_kelamin == 'Perempuan')
+                                                                    echo 'selected'; ?>>Perempuan</option>
                                 </select>
                                 <span class="pmd-textfield-focused"></span>
                             </div>
@@ -221,9 +226,10 @@ class MahasiswaView
                                     <?php
                                     $jurusan = $app->findAll("SELECT id, nama FROM jurusan");
                                     foreach ($jurusan as $j) {
-                                        ?>
-                                        <option value="<?php echo $j->id; ?>" <?php if (isset($result->jurusan_id) && $result->jurusan_id == $j->id) echo 'selected'; ?>><?php echo $j->nama; ?></option>
-                                        <?php
+                                    ?>
+                                        <option value="<?php echo $j->id; ?>" <?php if (isset($result->jurusan_id) && $result->jurusan_id == $j->id)
+                                                                                    echo 'selected'; ?>><?php echo $j->nama; ?></option>
+                                    <?php
                                     }
                                     ?>
                                 </select>
@@ -248,22 +254,22 @@ class MahasiswaView
                 </div>
             </div>
         </form>
-        <?php
+    <?php
     }
 
     public function index($result)
     {
         global $app, $config;
-        ?>
+    ?>
         <div class="pmd-card pmd-z-depth">
             <div class="pmd-card-title">
                 <h2 class="pmd-card-title-text typo-fill-secondary">Mahasiswa</h2>
             </div>
             <?php
             if (isset($_REQUEST["message"])) {
-                ?>
+            ?>
                 <div class="alert alert-info"><?php echo $_REQUEST["message"]; ?></div>
-                <?php
+            <?php
             }
             ?>
             <div class="pmd-card-body">
@@ -271,8 +277,7 @@ class MahasiswaView
                     <a class="btn btn-md btn-primary" href="<?php echo $app->config["site"]; ?>/admin/Mahasiswa/add">Tambah</a>
                 </div>
                 <div class="table-responsive">
-                    <table id="example" class="table pmd-table table-hover table-striped display responsive" cellspacing="0"
-                        width="100%">
+                    <table id="example" class="table pmd-table table-hover table-striped display responsive" cellspacing="0" width="100%">
                         <thead>
                             <tr>
                                 <th style="width:100px;">Aksi</th>
@@ -303,9 +308,9 @@ class MahasiswaView
                                     <td><?php echo $v->jurusan_nama; ?></td>
                                     <td><?php echo $v->tahun_masuk; ?></td>
                                     <td>
-                                        <?php if ($v->foto): ?>
-                                            <img src="<?php echo $v->foto; ?>" alt="Foto" style="width: 100px; height: 100px;">
-                                        <?php else: ?>
+                                        <?php if ($v->foto) : ?>
+                                            <img src="<?php echo $v->foto; ?>" alt="Foto" style="width: 95px; height: 110px;">
+                                        <?php else : ?>
                                             <span>Tidak ada foto</span>
                                         <?php endif; ?>
                                     </td>
@@ -330,7 +335,7 @@ class MahasiswaView
             }
 
             function findRecord(nim) {
-                $.getJSON("<?php echo $config["site"]; ?>/admin/Api/getMahasiswa/"  + nim, function(result){
+                $.getJSON("<?php echo $config["site"]; ?>/admin/Api/getMahasiswa/" + nim, function(result) {
                     if (result.success) {
                         alert(result.data.nama);
                     } else {
@@ -339,7 +344,7 @@ class MahasiswaView
                 });
             }
 
-            document.addEventListener('DOMContentLoaded', function () {
+            document.addEventListener('DOMContentLoaded', function() {
                 $('#example').DataTable({
                     responsive: {
                         details: {
@@ -363,14 +368,13 @@ class MahasiswaView
                             sPrevious: " "
                         },
                     },
-                    dom:
-                        "<'pmd-card-title'<'data-table-title'><'search-paper pmd-textfield'f>>" +
+                    dom: "<'pmd-card-title'<'data-table-title'><'search-paper pmd-textfield'f>>" +
                         "<'row'<'col-sm-12'tr>>" +
                         "<'pmd-card-footer' <'pmd-datatable-pagination' l i p>>",
                 });
             });
         </script>
-        <?php
+<?php
     }
 }
 

@@ -1,9 +1,11 @@
 <?php
-class App {
+class App
+{
     public $config;
     public $connection;
 
-    public function __construct($config) {
+    public function __construct($config)
+    {
         $this->config = $config;
 
         session_name("selasa");
@@ -18,7 +20,8 @@ class App {
         }
     }
 
-    public function loadComponent() {
+    public function loadComponent()
+    {
         // Buffer the output
         ob_start();
 
@@ -57,7 +60,8 @@ class App {
         return $html;
     }
 
-    public function find($sql, $params = array()) {
+    public function find($sql, $params = array())
+    {
         $result = null;
         try {
             $stmt = $this->connection->prepare($sql);
@@ -72,7 +76,8 @@ class App {
         return $result;
     }
 
-    public function findAll($sql, $params = array()) {
+    public function findAll($sql, $params = array())
+    {
         $result = array();
         try {
             $stmt = $this->connection->prepare($sql);
@@ -89,7 +94,8 @@ class App {
         return $result;
     }
 
-    public function query($sql, $params) {
+    public function query($sql, $params)
+    {
         $affectedRows = 0;
         try {
             $stmt = $this->connection->prepare($sql);
@@ -104,4 +110,3 @@ class App {
         return $affectedRows;
     }
 }
-?>

@@ -1,38 +1,48 @@
 <?php
-class JurusanController{
+class JurusanController
+{
     private $model, $view;
 
-    public function __construct(){
+    public function __construct()
+    {
         $this->model = new JurusanModel();
         $this->view = new JurusanView();
     }
 
-    public function index(){
+    public function index()
+    {
         $this->view->index($this->model->findAll());
     }
 
-    public function add(){
+    public function add()
+    {
         $this->view->edit($this->model->find(0));
     }
 
-    public function edit($id){
+    public function edit($id)
+    {
         $this->view->edit($this->model->find($id));
     }
 
-    public function save(){
+    public function save()
+    {
         $this->model->save();
     }
 
-    public function delete($id){
+    public function delete($id)
+    {
         $this->model->delete($id);
     }
-    public function search($id) {
+    public function search($id)
+    {
         $this->model->search($id);
     }
 }
 
-class JurusanModel{
-    public function findAll(){
+class JurusanModel
+{
+    public function findAll()
+    {
         global $app;
 
         $sql = "SELECT jurusan.id, jurusan.nama, fakultas.nama AS nama_fakultas
@@ -43,7 +53,8 @@ class JurusanModel{
         return $result;
     }
 
-    public function find($id){
+    public function find($id)
+    {
         global $app;
 
         $sql = "SELECT *
@@ -55,16 +66,17 @@ class JurusanModel{
         return $result;
     }
 
-    public function search($id) {
+    public function search($id)
+    {
         global $app, $config;
 
-        $ch = curl_init(); 
+        $ch = curl_init();
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         //curl_setopt($ch, CURLOPT_URL, $config["site"]."/admin/Api/getJurusan/".$id); 
-        curl_setopt($ch, CURLOPT_URL, $config["site"]."/Api/getJurusan/".$id); 
+        curl_setopt($ch, CURLOPT_URL, $config["site"] . "/Api/getJurusan/" . $id);
         curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-            'Content-Type: application/json', 
-            'Authorization: Bearer '.$config["token"]
+            'Content-Type: application/json',
+            'Authorization: Bearer ' . $config["token"]
         ));
         //curl_setopt($ch, CURLOPT_POST, 1);
         //curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($postParameters));
@@ -74,17 +86,18 @@ class JurusanModel{
         if (curl_errno($ch)) {
             $errNo = curl_errno($ch);
             $errMessage = curl_strerror($errNo);
-            echo $errNo." - ".$errMessage;
+            echo $errNo . " - " . $errMessage;
             return;
         }
-        curl_close($ch); 
-	
+        curl_close($ch);
+
         $json = json_decode($output);
-        echo "<pre>".print_r($json, true)."</pre>";
+        echo "<pre>" . print_r($json, true) . "</pre>";
         echo $json->data->nama;
     }
 
-    public function save(){
+    public function save()
+    {
         global $app;
 
         $id = intval($_REQUEST["id"]);
@@ -109,7 +122,8 @@ class JurusanModel{
         header("Location:" . $app->config["site"] . "/admin/Jurusan?message=Data berhasil disimpan");
     }
 
-    public function delete($id){
+    public function delete($id)
+    {
         global $app;
 
         $sql = "DELETE FROM jurusan WHERE id = :id";
@@ -120,10 +134,12 @@ class JurusanModel{
     }
 }
 
-class JurusanView{
-    public function edit($result){
+class JurusanView
+{
+    public function edit($result)
+    {
         global $app;
-        ?>
+?>
         <form action="<?php echo $app->config["site"]; ?>/admin/Jurusan/save" method="post">
             <input type="hidden" name="id" value="<?php echo isset($result->id) ? $result->id : ''; ?>">
             <div class="pmd-card pmd-z-depth">
@@ -132,9 +148,9 @@ class JurusanView{
                 </div>
                 <?php
                 if (isset($_REQUEST["message"])) {
-                    ?>
+                ?>
                     <div class="alert alert-info"><?php echo $_REQUEST["message"]; ?></div>
-                    <?php
+                <?php
                 }
                 ?>
                 <div class="pmd-card-body">
@@ -142,8 +158,7 @@ class JurusanView{
                         <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                             <div class="form-group form-group-sm">
                                 <label for="nama" class="control-label text-danger">Nama</label>
-                                <input class="form-control" name="nama" maxlength="40"
-                                    value="<?php echo isset($result->nama) ? $result->nama : ''; ?>" required autofocus>
+                                <input class="form-control" name="nama" maxlength="40" value="<?php echo isset($result->nama) ? $result->nama : ''; ?>" required autofocus>
                                 <span class="pmd-textfield-focused"></span>
                             </div>
                         </div>
@@ -181,22 +196,22 @@ class JurusanView{
                 </div>
             </div>
         </form>
-        <?php
+    <?php
     }
 
     public function index($result)
     {
         global $app, $config;
-        ?>
+    ?>
         <div class="pmd-card pmd-z-depth">
             <div class="pmd-card-title">
                 <h2 class="pmd-card-title-text typo-fill-secondary">Jurusan</h2>
             </div>
             <?php
             if (isset($_REQUEST["message"])) {
-                ?>
+            ?>
                 <div class="alert alert-info"><?php echo $_REQUEST["message"]; ?></div>
-                <?php
+            <?php
             }
             ?>
             <div class="pmd-card-body">
@@ -204,8 +219,7 @@ class JurusanView{
                     <a class="btn btn-md btn-primary" href="<?php echo $app->config["site"]; ?>/admin/Jurusan/add">Tambah</a>
                 </div>
                 <div class="table-responsive">
-                    <table id="example" class="table pmd-table table-hover table-striped display responsive" cellspacing="0"
-                        width="100%">
+                    <table id="example" class="table pmd-table table-hover table-striped display responsive" cellspacing="0" width="100%">
                         <thead>
                             <tr>
                                 <th style="width:150px;">Aksi</th>
@@ -216,22 +230,18 @@ class JurusanView{
                         <tbody>
                             <?php
                             foreach ($result as $v) {
-                                ?>
+                            ?>
                                 <tr>
                                     <td>
-                                        <a href="<?php echo $app->config["site"]; ?>/admin/Jurusan/edit/<?php echo $v->id; ?>"><i
-                                                class="material-icons md-dark pmd-sm">edit</i></a>
-                                        <a href="javascript:deleteRecord(<?php echo $v->id; ?>);"><i
-                                                class="material-icons md-dark pmd-sm">delete</i></a>
-                                        <a href="javascript:findRecord(<?php echo $v->id; ?>);"><i
-                                                class="material-icons md-dark pmd-sm">search</i></a>
-                                        <a href="<?php echo $app->config["site"]; ?>/admin/Jurusan/search/<?php echo $v->id; ?>"><i
-                                                class="material-icons md-dark pmd-sm">help_outline</i></a>
+                                        <a href="<?php echo $app->config["site"]; ?>/admin/Jurusan/edit/<?php echo $v->id; ?>"><i class="material-icons md-dark pmd-sm">edit</i></a>
+                                        <a href="javascript:deleteRecord(<?php echo $v->id; ?>);"><i class="material-icons md-dark pmd-sm">delete</i></a>
+                                        <a href="javascript:findRecord(<?php echo $v->id; ?>);"><i class="material-icons md-dark pmd-sm">search</i></a>
+                                        <a href="<?php echo $app->config["site"]; ?>/admin/Jurusan/search/<?php echo $v->id; ?>"><i class="material-icons md-dark pmd-sm">help_outline</i></a>
                                     </td>
                                     <td><?php echo $v->nama; ?></td>
                                     <td><?php echo $v->nama_fakultas; ?></td>
                                 </tr>
-                                <?php
+                            <?php
                             }
                             ?>
                         </tbody>
@@ -252,48 +262,47 @@ class JurusanView{
             }
 
             function findRecord(id) {
-            $.getJSON("<?php echo $config["site"]; ?>/admin/Api/getJurusan/" + id, function(result){
-                //$("#data").html(result);
-                if (result.success) {
-                    console.log(result);
-                    alert(result.data.nama);
-                } else {
-                    alert(result.message);
-                }
-            });
-        }
+                $.getJSON("<?php echo $config["site"]; ?>/admin/Api/getJurusan/" + id, function(result) {
+                    //$("#data").html(result);
+                    if (result.success) {
+                        console.log(result);
+                        alert(result.data.nama);
+                    } else {
+                        alert(result.message);
+                    }
+                });
+            }
 
             document.addEventListener('DOMContentLoaded', function() {
-            $('#example').DataTable({
-                responsive: {
-                    details: {
-                        type: 'column',
-                        target: 'tr'
-                    }
-                },
-                order: [ 1, 'asc' ],
-                bFilter: true,
-                bLengthChange: true,
-                pagingType: "simple",
-                "paging": true,
-                "searching": true,
-                "language": {
-                    "info": " _START_ - _END_ of _TOTAL_ ",
-                    "sLengthMenu": "<span class='custom-select-title'>Rows per page:</span> <span class='custom-select'> _MENU_ </span>",
-                    "sSearch": "",
-                    "sSearchPlaceholder": "Search",
-                    "paginate": {
-                        "sNext": " ",
-                        "sPrevious": " "
+                $('#example').DataTable({
+                    responsive: {
+                        details: {
+                            type: 'column',
+                            target: 'tr'
+                        }
                     },
-                },
-                dom:
-                    "<'pmd-card-title'<'data-table-title'><'search-paper pmd-textfield'f>>" +
-                    "<'row'<'col-sm-12'tr>>" +
-                    "<'pmd-card-footer' <'pmd-datatable-pagination' l i p>>",
+                    order: [1, 'asc'],
+                    bFilter: true,
+                    bLengthChange: true,
+                    pagingType: "simple",
+                    "paging": true,
+                    "searching": true,
+                    "language": {
+                        "info": " _START_ - _END_ of _TOTAL_ ",
+                        "sLengthMenu": "<span class='custom-select-title'>Rows per page:</span> <span class='custom-select'> _MENU_ </span>",
+                        "sSearch": "",
+                        "sSearchPlaceholder": "Search",
+                        "paginate": {
+                            "sNext": " ",
+                            "sPrevious": " "
+                        },
+                    },
+                    dom: "<'pmd-card-title'<'data-table-title'><'search-paper pmd-textfield'f>>" +
+                        "<'row'<'col-sm-12'tr>>" +
+                        "<'pmd-card-footer' <'pmd-datatable-pagination' l i p>>",
+                });
             });
-        });
-    </script>
+        </script>
 <?php
     }
 }

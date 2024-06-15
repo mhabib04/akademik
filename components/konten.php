@@ -43,7 +43,8 @@ class KontenController
 class KontenModel
 {
 
-    public function findPublishedContent() {
+    public function findPublishedContent()
+    {
         global $app;
 
         $sql = "SELECT id,judul, kategori, tanggal, foto FROM konten WHERE publikasi = 1";
@@ -174,7 +175,7 @@ class KontenView
     public function edit($result)
     {
         global $app;
-        ?>
+?>
         <form action="<?php echo $app->config["site"]; ?>/admin/Konten/save" method="post">
             <input type="hidden" name="id" value="<?php echo $result->id; ?>">
             <div class="pmd-card pmd-z-depth">
@@ -183,9 +184,9 @@ class KontenView
                 </div>
                 <?php
                 if (isset($_REQUEST["message"])) {
-                    ?>
+                ?>
                     <div class="alert alert-info"><?php echo $_REQUEST["message"]; ?></div>
-                    <?php
+                <?php
                 }
                 ?>
                 <div class="pmd-card-body">
@@ -195,24 +196,21 @@ class KontenView
                                 <label for="judul" class="control-label text-danger">
                                     Judul
                                 </label>
-                                <input class="form-control" name="judul" maxlength="100" value="<?php echo $result->judul; ?>"
-                                    required autofocus>
+                                <input class="form-control" name="judul" maxlength="100" value="<?php echo $result->judul; ?>" required autofocus>
                                 <span class="pmd-textfield-focused"></span>
                             </div>
                             <div class="form-group form-group-sm">
                                 <label for="kategori" class="control-label text-danger">
                                     Kategori
                                 </label>
-                                <input class="form-control" name="kategori" maxlength="100" value="<?php echo $result->kategori; ?>"
-                                    required>
+                                <input class="form-control" name="kategori" maxlength="100" value="<?php echo $result->kategori; ?>" required>
                                 <span class="pmd-textfield-focused"></span>
                             </div>
                             <div class="form-group form-group-sm">
                                 <label for="tanggal" class="control-label text-danger">
                                     Tanggal
                                 </label>
-                                <input type="date" class="form-control" name="tanggal" value="<?php echo $result->tanggal; ?>"
-                                    required>
+                                <input type="date" class="form-control" name="tanggal" value="<?php echo $result->tanggal; ?>" required>
                                 <span class="pmd-textfield-focused"></span>
                             </div>
                             <div class="form-group form-group-sm">
@@ -248,22 +246,22 @@ class KontenView
                 </div>
             </div>
         </form>
-        <?php
+    <?php
     }
 
     public function index($result)
     {
         global $app, $config;
-        ?>
+    ?>
         <div class="pmd-card pmd-z-depth">
             <div class="pmd-card-title">
                 <h2 class="pmd-card-title-text typo-fill-secondary">Konten</h2>
             </div>
             <?php
             if (isset($_REQUEST["message"])) {
-                ?>
+            ?>
                 <div class="alert alert-info"><?php echo $_REQUEST["message"]; ?></div>
-                <?php
+            <?php
             }
             ?>
             <div class="pmd-card-body">
@@ -271,8 +269,7 @@ class KontenView
                     <a class="btn btn-md btn-primary" href="<?php echo $app->config["site"]; ?>/admin/Konten/add">Tambah</a>
                 </div>
                 <div class="table-responsive">
-                    <table id="example" class="table pmd-table table-hover table-striped display responsive" cellspacing="0"
-                        width="100%">
+                    <table id="example" class="table pmd-table table-hover table-striped display responsive" cellspacing="0" width="100%">
                         <thead>
                             <tr>
                                 <th style="width:100px;">Aksi</th>
@@ -285,24 +282,20 @@ class KontenView
                         <tbody>
                             <?php
                             foreach ($result as $v) {
-                                ?>
+                            ?>
                                 <tr>
                                     <td>
-                                        <a href="<?php echo $app->config["site"]; ?>/admin/Konten/edit/<?php echo $v->id; ?>"><i
-                                                class="material-icons md-dark pmd-sm">edit</i></a>
-                                        <a href="javascript:deleteRecord(<?php echo $v->id; ?>);"><i
-                                                class="material-icons md-dark pmd-sm">delete</i></a>
-                                        <a href="javascript:findRecord(<?php echo $v->id; ?>);"><i
-                                                class="material-icons md-dark pmd-sm">search</i></a>
-                                        <a href="<?php echo $app->config["site"]; ?>/admin/Konten/search/<?php echo $v->id; ?>"><i
-                                                class="material-icons md-dark pmd-sm">help_outline</i></a>
+                                        <a href="<?php echo $app->config["site"]; ?>/admin/Konten/edit/<?php echo $v->id; ?>"><i class="material-icons md-dark pmd-sm">edit</i></a>
+                                        <a href="javascript:deleteRecord(<?php echo $v->id; ?>);"><i class="material-icons md-dark pmd-sm">delete</i></a>
+                                        <a href="javascript:findRecord(<?php echo $v->id; ?>);"><i class="material-icons md-dark pmd-sm">search</i></a>
+                                        <a href="<?php echo $app->config["site"]; ?>/admin/Konten/search/<?php echo $v->id; ?>"><i class="material-icons md-dark pmd-sm">help_outline</i></a>
                                     </td>
                                     <td><?php echo $v->judul; ?></td>
                                     <td><?php echo $v->kategori; ?></td>
                                     <td><?php echo $v->tanggal; ?></td>
                                     <td><?php echo ($v->publikasi == 1) ? 'Ya' : 'Tidak'; ?></td>
                                 </tr>
-                                <?php
+                            <?php
                             }
                             ?>
                         </tbody>
@@ -323,7 +316,7 @@ class KontenView
             }
 
             function findRecord(id) {
-                $.getJSON("<?php echo $config["site"]; ?>/admin/Api/getKonten/"  + id, function(result){
+                $.getJSON("<?php echo $config["site"]; ?>/admin/Api/getKonten/" + id, function(result) {
                     //$("#data").html(result);
                     if (result.success) {
                         //console.log(result.data.nama);
@@ -334,7 +327,7 @@ class KontenView
                 });
             }
 
-            document.addEventListener('DOMContentLoaded', function () {
+            document.addEventListener('DOMContentLoaded', function() {
                 $('#example').DataTable({
                     responsive: {
                         details: {
@@ -358,13 +351,12 @@ class KontenView
                             "sPrevious": " "
                         },
                     },
-                    dom:
-                        "<'pmd-card-title'<'data-table-title'><'search-paper pmd-textfield'f>>" +
+                    dom: "<'pmd-card-title'<'data-table-title'><'search-paper pmd-textfield'f>>" +
                         "<'row'<'col-sm-12'tr>>" +
                         "<'pmd-card-footer' <'pmd-datatable-pagination' l i p>>",
                 });
             });
         </script>
-        <?php
+<?php
     }
 }
